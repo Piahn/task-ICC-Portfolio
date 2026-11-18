@@ -1,0 +1,60 @@
+---
+title: "[Lab]: New Timeline Component"
+description: "Just added a new component to my lab: Timeline, an animated, fully responsive timeline built with motion/react and radix-ui."
+date: "2025-08-06"
+published: true
+featured: true
+tags:
+  - Lab
+  - React
+  - Motion
+  - Component
+---
+
+Just added a new component to my lab: `<Timeline>`, an animated, fully responsive timeline built with `motion/react` and `radix-ui`.
+
+Supports both vertical and horizontal orientations, auto-adapts to content size, and comes with a simple variant API for easy styling.
+
+## Interactive Preview
+
+Here is a live look at how the vertical timeline behaves in real-time:
+
+<VerticalTimeline />
+
+## Key Features
+
+- **Responsive Orientations**: Seamlessly switch between vertical and horizontal layouts.
+- **Motion Powered**: Fluid layout transitions and step changes powered by `motion/react`.
+- **Accessible Primitives**: Built on top of Radix UI primitives for robust accessibility.
+- **Customizable Indicators & Separators**: Supports solid, dashed, and dotted line styles with completed step indicators.
+
+## Installation & Usage
+
+You can import `<Timeline>` directly from your component library:
+
+```tsx
+import {
+  Timeline,
+  TimelineDate,
+  TimelineHeader,
+  TimelineIndicator,
+  TimelineItem,
+  TimelineSeparator,
+  TimelineTitle,
+} from "@/components/lab/timeline";
+
+export const Example = () => (
+  <Timeline defaultValue={1}>
+    <TimelineItem step={1}>
+      <TimelineHeader>
+        <TimelineSeparator variant="solid" />
+        <TimelineDate>Mar 15, 2024</TimelineDate>
+        <TimelineTitle>Project Kickoff</TimelineTitle>
+        <TimelineIndicator>1</TimelineIndicator>
+      </TimelineHeader>
+    </TimelineItem>
+  </Timeline>
+);
+```
+
+Stay tuned for the next Lab release!

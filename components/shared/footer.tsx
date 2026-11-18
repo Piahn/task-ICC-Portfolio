@@ -166,12 +166,10 @@ const Footer = () => {
                 asChild
               >
                 <Link
-                  href={"https://msafdev.substack.com"}
-                  aria-label="My Substack newsletter"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  href={"/newsletter"}
+                  aria-label="My Newsletter"
                 >
-                  <span className="sr-only">My Substack newsletter</span>
+                  <span className="sr-only">Read my newsletter</span>
                   newsletter
                 </Link>
               </Button>

@@ -72,6 +72,24 @@ const swifts = defineCollection({
     .transform(computedFields),
 });
 
+const newsletters = defineCollection({
+  name: "Newsletter",
+  pattern: "newsletter/**/*.mdx",
+  schema: s
+    .object({
+      slug: s.path(),
+      title: s.string().max(120),
+      image: s.string().max(99).optional(),
+      description: s.string().max(999),
+      date: s.isodate(),
+      published: s.boolean().default(true),
+      featured: s.boolean().default(false),
+      tags: s.array(s.string()).optional(),
+      body: s.mdx(),
+    })
+    .transform(computedFields),
+});
+
 export default defineConfig({
   root: "content",
   output: {
@@ -81,7 +99,7 @@ export default defineConfig({
     name: "[name]-[hash:6].[ext]",
     clean: true,
   },
-  collections: { posts, projects, swifts },
+  collections: { posts, projects, swifts, newsletters },
   mdx: {
     rehypePlugins: [
       rehypeToc,

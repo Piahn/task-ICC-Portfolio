@@ -13,6 +13,8 @@ import LabPage from "@/pages/lab";
 import LabDetailPage from "@/pages/lab-detail";
 import MaterialPage from "@/pages/material";
 import MentorshipPage from "@/pages/mentorship";
+import NewsletterPage from "@/pages/newsletter";
+import NewsletterDetailPage from "@/pages/newsletter-detail";
 import PersonalPage from "@/pages/personal";
 import PostPage from "@/pages/post";
 import PostDetailPage from "@/pages/post-detail";
@@ -39,6 +41,8 @@ export default function App() {
             <Route path="/lab/:slug" element={<LabDetailPage />} />
             <Route path="/material" element={<MaterialPage />} />
             <Route path="/mentorship" element={<MentorshipPage />} />
+            <Route path="/newsletter" element={<NewsletterPage />} />
+            <Route path="/newsletter/*" element={<NewsletterDetailPage />} />
             <Route path="/personal" element={<PersonalPage />} />
             <Route path="/post" element={<PostPage />} />
             <Route path="/post/*" element={<PostDetailPage />} />
