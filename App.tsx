@@ -21,6 +21,7 @@ import PostDetailPage from "@/pages/post-detail";
 import ProjectDetailPage from "@/pages/project-detail";
 import SwiftPage from "@/pages/swift";
 import SwiftDetailPage from "@/pages/swift-detail";
+import SnippetsPage from "@/pages/snippets";
 import NotePage from "@/pages/note";
 import AuthCallbackPage from "@/pages/auth-callback";
 import NotFoundPage from "@/pages/not-found";
@@ -49,6 +50,7 @@ export default function App() {
             <Route path="/project/:slug" element={<ProjectDetailPage />} />
             <Route path="/swift" element={<SwiftPage />} />
             <Route path="/swift/*" element={<SwiftDetailPage />} />
+            <Route path="/snippets" element={<SnippetsPage />} />
           </Route>
           <Route path="/note" element={<NotePage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />

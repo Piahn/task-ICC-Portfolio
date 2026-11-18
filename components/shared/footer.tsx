@@ -76,14 +76,11 @@ const Footer = () => {
               </h2>
               <div className="text-foreground/60 flex flex-col items-center gap-y-2 text-center text-sm font-medium md:items-start md:gap-y-1 md:text-left">
                 <Link
-                  href={"https://snipplet.vercel.app"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Snipplet"
+                  href={"/snippets"}
+                  aria-label="Code snippets"
                   className="anim hover:text-foreground"
-                  prefetch={false}
                 >
-                  Snipplet
+                  Snippets
                 </Link>
                 <Link
                   href={"/api/feed"}
@@ -104,14 +101,11 @@ const Footer = () => {
                   Note
                 </Link>
                 <Link
-                  href={"https://github.com/Piahn?tab=repositories&q=starter"}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Starter repositories"
+                  href={"/lab"}
+                  aria-label="UI Components Lab"
                   className="anim hover:text-foreground"
-                  prefetch={false}
                 >
-                  Starter Kit
+                  Lab
                 </Link>
               </div>
             </div>

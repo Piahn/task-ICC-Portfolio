@@ -15,7 +15,7 @@ export const placeItems = [
     id: 1,
     src: Place1,
     rotation: -5,
-    title: "bali!!",
+    title: "profile!!",
   },
   {
     id: 2,
