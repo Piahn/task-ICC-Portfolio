@@ -17,6 +17,7 @@ import NotFoundPage from "@/pages/not-found";
 import NewsletterActionBar from "@/components/newsletter/newsletter-action-bar";
 import NewsletterSubscribeCard from "@/components/newsletter/newsletter-subscribe-card";
 import NewsletterComments from "@/components/newsletter/newsletter-comments";
+import NewsletterRowItem from "@/components/newsletter/newsletter-row-item";
 import { VerticalTimeline } from "@/components/lab/examples/timeline/vertical-timeline";
 
 // Preview card wrapper matching Substack Gambar 2
@@ -123,6 +124,24 @@ export default function NewsletterDetailPage() {
 
           {/* Discussion / Comments Section */}
           <NewsletterComments slug={newsletter.slugAsParams} />
+
+          {/* More from Piahn Wijaya (Substack Feed at bottom of post) */}
+          <div className="mt-16 pt-8 border-t border-border/60 space-y-4">
+            <h3 className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
+              More from Piahn Wijaya
+            </h3>
+            <div className="divide-y divide-border/50">
+              {newsletters
+                .filter(
+                  (n) =>
+                    n.published && n.slugAsParams !== newsletter.slugAsParams,
+                )
+                .slice(0, 3)
+                .map((item) => (
+                  <NewsletterRowItem key={item.slug} newsletter={item} />
+                ))}
+            </div>
+          </div>
         </div>
       </div>
     </article>

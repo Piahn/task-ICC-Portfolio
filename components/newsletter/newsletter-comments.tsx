@@ -10,6 +10,7 @@ import GuestbookCard from "@/components/shared/cards/guestbook-card";
 import ContentForm from "@/components/form/content-form";
 import authMutation from "@/mutation/auth.mutation";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Svg } from "@/components/shared/svg";
 import { cn } from "@/lib/utils";
 
@@ -97,7 +98,21 @@ export const NewsletterComments = ({
       {/* Comments List */}
       <div className="space-y-4 pt-4">
         {isLoading ? (
-          <p className="text-xs text-muted-foreground italic">Loading comments...</p>
+          <div className="space-y-4">
+            {[1, 2].map((i) => (
+              <div key={i} className="flex items-start gap-3">
+                <Skeleton className="size-7 rounded-full shrink-0" />
+                <div className="flex-1 space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Skeleton className="h-3.5 w-24" />
+                    <Skeleton className="h-3 w-16" />
+                  </div>
+                  <Skeleton className="h-3.5 w-full" />
+                  <Skeleton className="h-3.5 w-2/3" />
+                </div>
+              </div>
+            ))}
+          </div>
         ) : comments && comments.length > 0 ? (
           comments.map((entry, index) => (
             <GuestbookCard

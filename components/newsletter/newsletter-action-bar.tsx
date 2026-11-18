@@ -9,6 +9,7 @@ import {
 import { toast } from "sonner";
 import { useNewsletterComments, useNewsletterLikes, useToggleNewsletterLike } from "@/query/newsletter";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 
 interface NewsletterActionBarProps {
@@ -23,7 +24,7 @@ export const NewsletterActionBar = ({
   className,
 }: NewsletterActionBarProps) => {
   const { data: likesData, isLoading: likesLoading } = useNewsletterLikes(slug);
-  const { data: commentsData } = useNewsletterComments(slug);
+  const { data: commentsData, isLoading: commentsLoading } = useNewsletterComments(slug);
   const toggleLike = useToggleNewsletterLike(slug);
 
   const likesCount = likesData?.count ?? 0;
@@ -99,7 +100,11 @@ export const NewsletterActionBar = ({
           ) : (
             <PiHeartBold className="size-4" />
           )}
-          <span>{likesCount}</span>
+          {likesLoading ? (
+            <Skeleton className="h-3 w-3.5 rounded" />
+          ) : (
+            <span>{likesCount}</span>
+          )}
         </Button>
 
         {/* Comment Button */}
@@ -111,7 +116,11 @@ export const NewsletterActionBar = ({
           aria-label="View comments"
         >
           <PiChatCircleDotsBold className="size-4" />
-          <span>{totalComments}</span>
+          {commentsLoading ? (
+            <Skeleton className="h-3 w-3.5 rounded" />
+          ) : (
+            <span>{totalComments}</span>
+          )}
         </Button>
       </div>
 
