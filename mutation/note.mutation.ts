@@ -74,7 +74,8 @@ const isAuthRelatedNoteError = (error: unknown) => {
     normalizedMessage.includes("row-level security") ||
     normalizedMessage.includes("permission denied") ||
     normalizedMessage.includes("auth session") ||
-    normalizedMessage.includes("jwt")
+    normalizedMessage.includes("jwt") ||
+    normalizedMessage.includes("login")
   );
 };
 
@@ -92,11 +93,19 @@ const noteMutation = () => {
     MutationContext
   >({
     mutationFn: async ({ note, color }: NoteRequest) => {
+      const { data: userResult, error: userError } =
+        await supabase.auth.getUser();
+
+      if (userError || !userResult.user) {
+        throw new Error("Please login first");
+      }
+
       const { data, error } = await supabase
         .from("note")
         .insert({
           content: note,
           color,
+          user_id: userResult.user.id,
         })
         .select()
         .single();
@@ -109,11 +118,14 @@ const noteMutation = () => {
 
       const previousNotes = queryClient.getQueryData<Note[]>(NOTES_QUERY_KEY);
       const optimisticColor = COLOR_OPTION_MAP[color] ?? DEFAULT_COLOR_OPTION;
+      const { data: userResult } = await supabase.auth.getUser();
+      const userId = userResult?.user?.id ?? "temp";
+
       const optimisticNote: SupabaseNote = {
         id: Date.now(),
         content: note,
         color: optimisticColor,
-        user_id: "temp",
+        user_id: userId,
         created_at: new Date().toISOString(),
       };
 
