@@ -1,0 +1,224 @@
+---
+title: Data Fetching in React
+description: Understanding data fetching in React, starting from vanilla useEffect to using React Query for a cleaner workflow.
+date: 2025-07-16
+tags: ["code", "react", "tutorial"]
+published: true
+image: "/post/ocean.webp"
+---
+
+## Introduction
+
+Fetching data is one of the most common things you do in React.
+
+At first, it feels simple. Fetch some data, store it in state, then render it on the page.
+
+But real applications usually need more than that. You start dealing with loading states, failed requests, caching, and refetching data without breaking the UI.
+
+In this post, we will start with the basic `useEffect` approach, then move to React Query and compare the differences.
+
+## Fetching Data with `useEffect`
+
+### Basic Example
+
+The most common way to fetch data in React is with `useEffect`.
+
+```jsx
+import { useEffect, useState } from "react";
+
+function Users() {
+  const [users, setUsers] = useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => res.json())
+      .then((data) => setUsers(data));
+  }, []);
+
+  return (
+    <ul>
+      {users.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+This works fine for smaller projects.
+
+When the component mounts, the request runs and the response gets stored into state.
+
+### The Problem
+
+The issue is that this only handles the happy path.
+
+There is no loading state, no error handling, and no feedback for users while the request is happening.
+
+If the API is slow or fails completely, the page just sits there empty.
+
+## Adding Loading and Error States
+
+### Improving the Experience
+
+A more realistic version usually includes loading and error handling.
+
+```jsx
+import { useEffect, useState } from "react";
+
+function Users() {
+  const [users, setUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isError, setIsError] = useState(false);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch");
+        return res.json();
+      })
+      .then((data) => {
+        setUsers(data);
+        setIsLoading(false);
+      })
+      .catch(() => {
+        setIsError(true);
+        setIsLoading(false);
+      });
+  }, []);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Something went wrong.</p>;
+
+  return (
+    <ul>
+      {users.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+This already feels much better for users.
+
+The UI now communicates what is happening instead of silently failing.
+
+### Repetitive Logic
+
+The downside is that this pattern gets repetitive quickly.
+
+Almost every fetch request starts needing:
+
+- Loading state
+- Error state
+- Retry handling
+- Refetch logic
+
+After building a few pages, you end up rewriting the same structure repeatedly.
+
+That is one of the main reasons libraries like React Query became popular.
+
+## Introducing React Query
+
+### Installing React Query
+
+First, install the package:
+
+```bash
+npm install @tanstack/react-query
+```
+
+Then wrap your app with `QueryClientProvider`.
+
+```jsx
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+import Users from "./Users";
+
+const queryClient = new QueryClient();
+
+function App() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Users />
+    </QueryClientProvider>
+  );
+}
+```
+
+## Fetching with `useQuery`
+
+### Cleaner Fetch Logic
+
+Now we can rewrite the same example using `useQuery`.
+
+```jsx
+import { useQuery } from "@tanstack/react-query";
+
+function Users() {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["users"],
+    queryFn: () =>
+      fetch("https://jsonplaceholder.typicode.com/users").then((res) => {
+        if (!res.ok) throw new Error("Network error");
+        return res.json();
+      }),
+  });
+
+  if (isLoading) return <p>Loading...</p>;
+  if (isError) return <p>Error fetching users.</p>;
+
+  return (
+    <ul>
+      {data.map((user) => (
+        <li key={user.id}>{user.name}</li>
+      ))}
+    </ul>
+  );
+}
+```
+
+The component becomes noticeably cleaner.
+
+We no longer manage loading or error state manually because React Query handles them for us.
+
+### Built-in Features
+
+React Query also gives us features like:
+
+- Caching
+- Background refetching
+- Retry logic
+- Request deduplication
+- Devtools
+
+Without React Query, most of these would need to be implemented manually.
+
+## Comparing Both Approaches
+
+| Feature               | useEffect + fetch | React Query |
+| --------------------- | ----------------- | ----------- |
+| Data fetching         | ✅                | ✅          |
+| Loading state         | Manual            | Built-in    |
+| Error handling        | Manual            | Built-in    |
+| Caching               | ❌                | ✅          |
+| Background refetching | ❌                | ✅          |
+| Retry logic           | ❌                | ✅          |
+| Boilerplate           | High              | Lower       |
+
+## Final Thoughts
+
+Using `useEffect` is still completely fine for simpler applications.
+
+But as projects grow, manually managing fetch logic becomes repetitive pretty quickly.
+
+React Query simplifies a lot of that work by handling caching, loading states, retries, and synchronization out of the box.
+
+If you want to explore more advanced features like mutations, pagination, or optimistic updates, the official docs are worth checking out.
+
+React Query Docs: https://tanstack.com/query/latest
+
+---
+
+Image by Mike Yukhtenko

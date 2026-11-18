@@ -1,0 +1,76 @@
+name: Ping Supabase to Prevent Pausing
+
+on:
+  schedule:
+    # Runs at 06:30 UTC every 2 days (off-peak minute to avoid GitHub Actions queue delays)
+    - cron: "30 6 */2 * *"
+  workflow_dispatch: # Allows manual triggering from the GitHub UI Actions tab
+  push:
+    paths:
+      - ".github/workflows/supabase.yml" # Automatically test when workflow is updated
+
+jobs:
+  ping:
+    name: Ping Supabase Database
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Ping Supabase Database & Auth
+        env:
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL || secrets.SUPABASE_URL }}
+          SUPABASE_KEY: ${{ secrets.NEXT_SERVICE_ROLE_KEY || secrets.SUPABASE_SERVICE_ROLE_KEY || secrets.NEXT_PUBLIC_SUPABASE_SERVICE_ROLE || secrets.SUPABASE_KEY || secrets.NEXT_PUBLIC_SUPABASE_ANON_KEY || secrets.SUPABASE_ANON_KEY }}
+        run: |
+          node --input-type=module <<'EOF'
+          const rawUrl = process.env.SUPABASE_URL;
+          const key = process.env.SUPABASE_KEY;
+
+          if (!rawUrl || !key) {
+            console.error('❌ Error: Missing Supabase credentials in GitHub Secrets.');
+            console.error('Please configure at least one of the following secrets in GitHub Repository Settings -> Secrets and variables -> Actions:');
+            console.error('  - SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL)');
+            console.error('  - SUPABASE_KEY (or NEXT_PUBLIC_SUPABASE_ANON_KEY, NEXT_SERVICE_ROLE_KEY, SUPABASE_SERVICE_ROLE_KEY)');
+            process.exit(1);
+          }
+
+          const baseUrl = rawUrl.replace(/\/+$/, '');
+          const endpoint = `${baseUrl}/rest/v1/guestbook?select=id&limit=1`;
+
+          console.log(`📡 Pinging Supabase endpoint: ${endpoint}`);
+          const startTime = Date.now();
+
+          try {
+            const response = await fetch(endpoint, {
+              method: 'GET',
+              headers: {
+                'apikey': key,
+                'Authorization': `Bearer ${key}`,
+                'Content-Type': 'application/json',
+                'User-Agent': 'GitHub-Actions-KeepAlive/1.0'
+              }
+            });
+
+            const duration = Date.now() - startTime;
+
+            if (!response.ok) {
+              const errorText = await response.text();
+              console.error(`❌ Supabase returned HTTP ${response.status} ${response.statusText} (${duration}ms)`);
+              console.error(`Response details: ${errorText}`);
+              process.exit(1);
+            }
+
+            const data = await response.json();
+            console.log(`✅ Supabase ping successful! HTTP ${response.status} OK (${duration}ms)`);
+            console.log(`📊 Records retrieved: ${Array.isArray(data) ? data.length : 1}`);
+          } catch (err) {
+            console.error(`❌ Network or fetch error: ${err.message}`);
+            process.exit(1);
+          }
+          EOF

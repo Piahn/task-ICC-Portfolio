@@ -1,0 +1,10 @@
+User-agent: Googlebot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: Bingbot
+Disallow: /
+
+Sitemap: https://salmoon.vercel.app/sitemap.xml

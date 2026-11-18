@@ -1,0 +1,27 @@
+{
+  "compilerOptions": {
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "paths": {
+      "@/*": ["./*"],
+      "#site/content": ["./.velite"],
+      "next/image": ["./lib/compat/next-image.tsx"],
+      "next/link": ["./lib/compat/next-link.tsx"],
+      "next/navigation": ["./lib/compat/next-navigation.ts"],
+      "next/dynamic": ["./lib/compat/next-dynamic.tsx"],
+      "next/font/google": ["./lib/compat/next-font.ts"]
+    }
+  },
+  "include": ["**/*.ts", "**/*.tsx", "vite-env.d.ts"],
+  "exclude": ["node_modules", "dist"]
+}
