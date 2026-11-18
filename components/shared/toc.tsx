@@ -5,12 +5,14 @@ import { useIsClient, useMediaQuery } from "usehooks-ts";
 
 import { useEffect, useState } from "react";
 
+import { useSmoothScroll } from "@/components/provider/smooth-scroll-provider";
 import { slugify } from "@/lib/functions";
 import { cn } from "@/lib/utils";
 
 export type TocItem = {
   depth: number;
   value: string;
+  id?: string;
   children?: TocItem[];
 };
 
@@ -27,21 +29,46 @@ const TableOfContents = ({
 }: TableOfContentsProps) => {
   const matches = useMediaQuery("(max-width: 768px)");
   const isClient = useIsClient();
+  const { scrollTo } = useSmoothScroll();
 
   const [activeId, setActiveId] = useState<string | null>(null);
 
   useEffect(() => {
-    const headingElements = getHeadingElements();
-
     const handleScroll = () => {
-      const scrollY = window.scrollY + window.innerHeight / 3;
+      const headings = Array.from(
+        document.querySelectorAll<HTMLElement>(
+          "h2[id], h3[id], h4[id], h5[id], h6[id]",
+        ),
+      );
+      if (!headings.length) return;
+
+      // Check if user scrolled near the bottom of the page
+      const isBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 60;
+      if (isBottom) {
+        setActiveId(headings[headings.length - 1].id);
+        return;
+      }
+
+      // Reading threshold: upper 30% of viewport or 120px
+      const threshold = Math.max(120, window.innerHeight * 0.3);
       let currentId: string | null = null;
 
-      for (const heading of headingElements) {
-        if (heading.offsetTop <= scrollY) {
+      for (const heading of headings) {
+        const rect = heading.getBoundingClientRect();
+        if (rect.top <= threshold) {
           currentId = heading.id;
         } else {
           break;
+        }
+      }
+
+      // If above first heading but first heading is already visible in viewport
+      if (!currentId && headings.length > 0) {
+        const firstRect = headings[0].getBoundingClientRect();
+        if (firstRect.top <= window.innerHeight * 0.5) {
+          currentId = headings[0].id;
         }
       }
 
@@ -50,16 +77,13 @@ const TableOfContents = ({
 
     window.addEventListener("scroll", handleScroll, { passive: true });
     handleScroll();
+    const timer = setTimeout(handleScroll, 200);
 
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      clearTimeout(timer);
+    };
   }, []);
-
-  const getHeadingElements = () =>
-    Array.from(
-      document.querySelectorAll<HTMLElement>(
-        "h2[id], h3[id], h4[id], h5[id], h6[id]",
-      ),
-    );
 
   const scrollToHeading = (id: string) => {
     const element = document.getElementById(id);
@@ -71,26 +95,24 @@ const TableOfContents = ({
         window.scrollY -
         (scrollPosition === "center" ? window.innerHeight / 3 : 106);
 
-      window.scrollTo({
-        top: y,
-        behavior: "smooth",
-      });
+      scrollTo(y, { duration: 0.8 });
     }
   };
 
   const renderTocItems = (items: TocItem[]) =>
     items.map((item) => {
-      const id = slugify(item.value);
+      const id = item.id || slugify(item.value);
       const isActive = activeId === id;
 
       return (
         <li key={id}>
           <button
+            type="button"
             onClick={() => scrollToHeading(id)}
             className={cn(
-              "hover:text-foreground w-fit cursor-pointer text-left text-xs font-medium transition-colors duration-300 lg:text-sm lg:text-nowrap",
+              "hover:text-foreground w-fit cursor-pointer text-left text-xs font-medium transition-colors duration-200 lg:text-sm lg:text-nowrap focus:outline-none focus-visible:ring-1 focus-visible:ring-ring/40 rounded-xs select-none",
               {
-                "text-foreground": isActive,
+                "text-foreground font-semibold": isActive,
                 "text-muted-foreground": !isActive,
                 "pl-3": item.depth === 3,
                 "pl-6": item.depth === 4,

@@ -102,9 +102,9 @@ export default defineConfig({
   collections: { posts, projects, swifts, newsletters },
   mdx: {
     rehypePlugins: [
+      rehypeSlug,
       rehypeToc,
       [rehypeTocExtract, { name: "toc" }],
-      rehypeSlug,
       [
         rehypePrettyCode,
         {

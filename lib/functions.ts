@@ -2,12 +2,11 @@ import { TocItem } from "@/components/shared/toc";
 
 import { API_REFERENCES } from "@/lib/api-reference";
 import { ComponentType } from "@/lib/data";
+import GithubSlugger from "github-slugger";
 
 export function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/(^-|-$)/g, "");
+  const slugger = new GithubSlugger();
+  return slugger.slug(text);
 }
 
 export function copyToClipboard(text: string) {
