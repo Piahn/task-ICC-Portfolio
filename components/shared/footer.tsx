@@ -104,7 +104,7 @@ const Footer = () => {
                   Note
                 </Link>
                 <Link
-                  href={"https://github.com/msafdev?tab=repositories&q=starter"}
+                  href={"https://github.com/Piahn?tab=repositories&q=starter"}
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Starter repositories"
