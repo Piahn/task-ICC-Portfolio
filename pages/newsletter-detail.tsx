@@ -19,6 +19,15 @@ import NewsletterSubscribeCard from "@/components/newsletter/newsletter-subscrib
 import NewsletterComments from "@/components/newsletter/newsletter-comments";
 import { VerticalTimeline } from "@/components/lab/examples/timeline/vertical-timeline";
 
+// Preview card wrapper matching Substack Gambar 2
+const TimelinePreview = () => (
+  <div className="not-prose my-8 w-full overflow-hidden rounded-xl border border-border/80 bg-muted/20 dark:bg-card/40 p-6 sm:p-8 flex items-center justify-center shadow-xs">
+    <div className="w-full max-w-xs">
+      <VerticalTimeline />
+    </div>
+  </div>
+);
+
 export default function NewsletterDetailPage() {
   const params = useParams();
   const slug = params["*"] || params.slug || "";
@@ -30,27 +39,6 @@ export default function NewsletterDetailPage() {
 
   const tableOfContents = MDXToC({ code: newsletter.body });
 
-  const handleShare = async () => {
-    const url = typeof window !== "undefined" ? window.location.href : "";
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: newsletter.title,
-          url,
-        });
-        return;
-      } catch {
-        // Fallback
-      }
-    }
-    try {
-      await navigator.clipboard.writeText(url);
-      toast.success("Link copied to clipboard!");
-    } catch {
-      toast.error("Failed to copy link.");
-    }
-  };
-
   return (
     <article
       id={newsletter.slug}
@@ -60,8 +48,8 @@ export default function NewsletterDetailPage() {
       <TableOfContents toc={tableOfContents} />
 
       <div className="mx-auto w-full max-w-lg space-y-8 md:max-w-md md:space-y-10 lg:max-w-lg lg:space-y-12">
-        {/* Top Navigation */}
-        <div className="flex w-full items-center justify-between">
+        {/* Top Navigation (Clean Go Back without duplicate Share) */}
+        <div className="flex w-full items-center justify-start">
           <Link
             href="/newsletter"
             aria-label="Go back to /newsletter"
@@ -70,15 +58,6 @@ export default function NewsletterDetailPage() {
             <PiArrowLeftBold className="size-4" />
             <p className="text-sm font-medium">Go back</p>
           </Link>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleShare}
-            className="text-muted-foreground h-9 w-9 cursor-pointer"
-            aria-label="Share newsletter"
-          >
-            <PiShareNetworkDuotone className="size-4" />
-          </Button>
         </div>
 
         {/* Header (Gambar 2 & 3 Combo) */}
@@ -131,7 +110,8 @@ export default function NewsletterDetailPage() {
             <Mdx
               code={newsletter.body}
               components={{
-                VerticalTimeline,
+                TimelinePreview,
+                VerticalTimeline: TimelinePreview,
               }}
             />
           </div>
