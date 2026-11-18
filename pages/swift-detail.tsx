@@ -98,8 +98,8 @@ export default function SwiftDetailPage() {
             <div className="relative">
               <Avatar className="size-11 rounded-full border">
                 <AvatarImage
-                  src="https://github.com/msafdev.png"
-                  alt="@msafdev"
+                  src="/assets/ava.webp"
+                  alt={`@${siteItems.name}`}
                 />
                 <AvatarFallback className="text-muted-foreground rounded-md">
                   PW

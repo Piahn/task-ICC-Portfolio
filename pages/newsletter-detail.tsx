@@ -74,7 +74,7 @@ export default function NewsletterDetailPage() {
             <div className="relative">
               <Avatar className="size-10 rounded-full border border-border">
                 <AvatarImage
-                  src="https://github.com/pwijaya.png"
+                  src="/assets/ava.webp"
                   alt="@pwijaya"
                 />
                 <AvatarFallback className="text-muted-foreground text-xs font-semibold">

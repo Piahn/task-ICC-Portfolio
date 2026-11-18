@@ -8,7 +8,7 @@ export const StatusAvatar = () => {
       <div className="relative">
         <Avatar>
           <AvatarImage
-            src="https://github.com/msafdev.png"
+            src="/assets/ava.webp"
             alt="Status Avatar"
           />
           <AvatarFallback>
@@ -23,7 +23,7 @@ export const StatusAvatar = () => {
       <div className="relative">
         <Avatar>
           <AvatarImage
-            src="https://github.com/msafdev.png"
+            src="/assets/ava.webp"
             alt="Status Avatar"
           />
           <AvatarFallback>
@@ -38,7 +38,7 @@ export const StatusAvatar = () => {
       <div className="relative">
         <Avatar>
           <AvatarImage
-            src="https://github.com/msafdev.png"
+            src="/assets/ava.webp"
             alt="Status Avatar"
           />
           <AvatarFallback>

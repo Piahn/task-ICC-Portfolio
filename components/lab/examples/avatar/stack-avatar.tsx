@@ -6,10 +6,10 @@ export const StackAvatar = () => {
       <div className="flex -space-x-2">
         <Avatar className="border-background size-8 border-2">
           <AvatarImage
-            src="https://github.com/msafdev.png"
+            src="/assets/ava.webp"
             alt="User 1 Avatar"
           />
-          <AvatarFallback>MS</AvatarFallback>
+          <AvatarFallback>PW</AvatarFallback>
         </Avatar>
         <Avatar className="border-background size-8 border-2">
           <AvatarImage

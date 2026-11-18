@@ -18,9 +18,9 @@ const items = [
     avatarUrl: "https://github.com/ibelick.png",
   },
   {
-    id: "msafdev",
-    name: "Msafdev",
-    avatarUrl: "https://github.com/msafdev.png",
+    id: "pwijaya",
+    name: "Piahn Wijaya",
+    avatarUrl: "/assets/ava.webp",
   },
   {
     id: "pramudya",
