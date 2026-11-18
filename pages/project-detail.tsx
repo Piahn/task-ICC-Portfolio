@@ -30,7 +30,10 @@ export default function ProjectDetailPage() {
   }
 
   const tableOfContents = MDXToC({ code: project.body });
-  const shareUrl = `https://salmoon.vercel.app/project/${project.slugAsParams}`;
+  const shareUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/project/${project.slugAsParams}`
+      : `https://pwijaya.eu.cc/project/${project.slugAsParams}`;
 
   return (
     <article id={project.slug} className="relative flex h-auto w-full grow px-4">

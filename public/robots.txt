@@ -7,4 +7,5 @@ Allow: /
 User-agent: Bingbot
 Disallow: /
 
-Sitemap: https://salmoon.vercel.app/sitemap.xml
+Host: https://pwijaya.eu.cc
+Sitemap: https://pwijaya.eu.cc/sitemap.xml

@@ -33,6 +33,10 @@ import { getFilePathAndConfig } from "@/lib/read-file";
 export default function LabDetailPage() {
   const { slug } = useParams<{ slug: string }>();
   const item = COMPONENTS.find((component) => component.slug === slug);
+  const shareUrl =
+    typeof window !== "undefined" && item
+      ? `${window.location.origin}/lab/${item.slug}`
+      : `https://pwijaya.eu.cc/lab/${slug}`;
 
   const [fileConfig, setFileConfig] = useState<{
     code: string;
@@ -92,7 +96,7 @@ export default function LabDetailPage() {
             className="text-muted-foreground h-9 w-9"
           >
             <Link
-              href={`https://x.com/intent/tweet?text=${item?.name}&url=https://salmoon.vercel.app/lab/${item?.slug}`}
+              href={`https://x.com/intent/tweet?text=${encodeURIComponent(item?.name || "")}&url=${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               scroll={true}

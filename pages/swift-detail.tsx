@@ -43,6 +43,10 @@ export default function SwiftDetailPage() {
       value: component.name,
     })) || []),
   ];
+  const shareUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/${swift.slug}`
+      : `https://pwijaya.eu.cc/${swift.slug}`;
 
   return (
     <article id={swift.slug} className="relative flex h-auto w-full grow px-4">
@@ -66,7 +70,7 @@ export default function SwiftDetailPage() {
             className="text-muted-foreground h-9 w-9"
           >
             <Link
-              href={`https://x.com/intent/tweet?text=${swift?.title}&url=https://salmoon.vercel.app/${swift?.slug}`}
+              href={`https://x.com/intent/tweet?text=${encodeURIComponent(swift?.title || "")}&url=${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               scroll={true}

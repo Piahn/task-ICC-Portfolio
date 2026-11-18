@@ -28,6 +28,10 @@ export default function PostDetailPage() {
   }
 
   const tableOfContents = MDXToC({ code: post.body });
+  const shareUrl =
+    typeof window !== "undefined"
+      ? `${window.location.origin}/${post.slug}`
+      : `https://pwijaya.eu.cc/${post.slug}`;
 
   return (
     <article id={post.slug} className="relative flex h-auto w-full grow px-4">
@@ -51,7 +55,7 @@ export default function PostDetailPage() {
             className="text-muted-foreground h-9 w-9"
           >
             <Link
-              href={`https://x.com/intent/tweet?text=${post?.title}&url=https://salmoon.vercel.app/${post?.slug}`}
+              href={`https://x.com/intent/tweet?text=${encodeURIComponent(post?.title || "")}&url=${encodeURIComponent(shareUrl)}`}
               target="_blank"
               rel="noopener noreferrer"
               scroll={true}
