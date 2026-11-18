@@ -83,7 +83,7 @@ export default function PostDetailPage() {
             <div className="relative">
               <Avatar className="size-11 rounded-full border">
                 <AvatarImage
-                  src="/assets/ava.webp"
+                  src="https://avatars.githubusercontent.com/u/132025108?v=4"
                   alt={`@${siteItems.name}`}
                 />
                 <AvatarFallback className="text-muted-foreground rounded-md">

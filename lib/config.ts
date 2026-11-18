@@ -12,14 +12,14 @@ export const siteItems = {
   description:
     "When creativity meets perfection, you get me. A freelance product engineer / fullstack developer with a passion for building pretty products.",
   name: "Piahn Wijaya",
-  avatar: "/assets/ava.webp",
+  avatar: "https://avatars.githubusercontent.com/u/132025108?v=4",
   url: process.env.NEXT_PUBLIC_BASE_URL,
   role: "Fullstack Engineer",
   links: {
     twitter: "https://twitter.com/pwijaya",
-    github: "https://github.com/pwijaya",
-    email: "pwijaya@gmail.com",
-    personalSite: "https://pwijaya.com",
+    github: "https://github.com/Piahn",
+    email: "owijaya131@gmail.com",
+    personalSite: "https://pwijaya.eu.cc",
   },
 };
 

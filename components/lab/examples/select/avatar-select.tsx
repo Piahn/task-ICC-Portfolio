@@ -20,7 +20,7 @@ const items = [
   {
     id: "pwijaya",
     name: "Piahn Wijaya",
-    avatarUrl: "/assets/ava.webp",
+    avatarUrl: "https://avatars.githubusercontent.com/u/132025108?v=4",
   },
   {
     id: "pramudya",
